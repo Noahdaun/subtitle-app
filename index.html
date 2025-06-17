@@ -21,6 +21,7 @@
   <script>
     const videoId = "D9aw-YysJ0M"; // 🔁 여기만 바꾸면 영상 바뀜
     let subtitles = [];
+    let player;
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player("player", {
