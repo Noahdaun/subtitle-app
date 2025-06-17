@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SpeakGym Subtitle Player</title>
+  <title>SpeakGym Subtitle Player - Debug</title>
   <style>
     body { margin: 0; font-family: sans-serif; }
     #player { height: 40vh; width: 100%; }
@@ -19,22 +19,31 @@
   <div id="subtitles"></div>
 
   <script>
-    const videoId = "D9aw-YysJ0M"; // 🔁 여기만 바꾸면 영상 바뀜
+    const videoId = "D9aw-YysJ0M";
     let subtitles = [];
     let player;
 
     function onYouTubeIframeAPIReady() {
+      console.log("YouTube API Ready");
       player = new YT.Player("player", {
         height: "100%",
         width: "100%",
         videoId,
         events: {
           onReady: () => {
+            console.log("Player is ready");
             fetch("subtitles.json")
-              .then(res => res.json())
+              .then(res => {
+                console.log("Fetched subtitles.json", res);
+                return res.json();
+              })
               .then(data => {
+                console.log("Parsed subtitles:", data);
                 subtitles = data;
                 renderSubtitles();
+              })
+              .catch(error => {
+                console.error("Error fetching subtitles:", error);
               });
           },
         },
@@ -53,6 +62,7 @@
     }
 
     function renderSubtitles() {
+      console.log("Rendering subtitles...", subtitles);
       const container = document.getElementById("subtitles");
       container.innerHTML = "";
       subtitles.forEach((line, index) => {
